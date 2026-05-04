@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* ─── Custom Utilities ──────────────────────────────────────── */
+@layer utilities {
+  .currency {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  .income {
+    @apply text-success font-semibold currency;
+  }
+
+  .expense {
+    @apply text-error font-semibold currency;
+  }
+}
+
+/* ─── HTMX Loading Indicator ────────────────────────────────── */
+.htmx-indicator {
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+}
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+  opacity: 1;
+}
+
+/* ─── View Transitions ──────────────────────────────────────── */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(main-content) {
+  animation: 200ms ease-out both fade-out;
+}
+::view-transition-new(main-content) {
+  animation: 300ms ease-in both fade-in;
+}
+@keyframes fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
