@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign Out" %} | FinTrack{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-20">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body text-center">
+      <h2 class="card-title justify-center text-2xl mb-4">{% trans "Sign Out" %}</h2>
+      <p class="mb-6">{% trans "Are you sure you want to sign out?" %}</p>
+
+      <form method="POST" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <div class="card-actions justify-center gap-2">
+          <button type="submit" class="btn btn-error">
+            {% trans "Sign Out" %}
+          </button>
+          <a href="{% url 'core:dashboard' %}" class="btn btn-ghost">
+            {% trans "Cancel" %}
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}404 Not Found — FinTrack{% endblock %}
+{% block content %}
+<div class="hero min-h-96">
+  <div class="hero-content text-center">
+    <div>
+      <h1 class="text-8xl font-bold text-primary">404</h1>
+      <p class="text-2xl mt-4">Page not found</p>
+      <p class="text-base-content/60 mt-2">The page you're looking for doesn't exist.</p>
+      <a href="{% url 'finance:dashboard' %}" class="btn btn-primary mt-6">Go Home</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

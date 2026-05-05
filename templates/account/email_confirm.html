@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account %}
+
+{% block title %}{% trans "Confirm Email Address" %} | FinTrack{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-20">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body text-center">
+      <h2 class="card-title justify-center text-2xl mb-4">{% trans "Confirm Email Address" %}</h2>
+
+      {% if confirmation %}
+        {% user_display confirmation.email_address.user as user_display %}
+        <p class="mb-6">
+          {% blocktrans with confirmation.email_address.email as email %}
+            Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.
+          {% endblocktrans %}
+        </p>
+
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">{% trans "Confirm" %}</button>
+        </form>
+      {% else %}
+        <div class="alert alert-error mb-4">
+          <span>{% trans "This email confirmation link expired or is invalid. Please request a new email confirmation." %}</span>
+        </div>
+        <a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Request New Confirmation" %}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

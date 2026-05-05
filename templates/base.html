@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="fintrack" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}FinTrack{% endblock %}</title>
+
+  {% if debug %}
+    {# Dev: CDN DaisyUI + Tailwind (tidak perlu build) #}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  {% else %}
+    {# Prod: compiled CSS dari django-tailwind #}
+    {% load tailwind_tags %}
+    {% tailwind_css %}
+  {% endif %}
+
+  {# HTMX #}
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
+  {# Hyperscript #}
+  <script src="{% static 'js/hyperscript.min.js' %}" defer></script>
+
+  {# HTMX global config #}
+  <meta name="htmx-config" content='{"globalViewTransitions": true, "defaultSwapStyle": "innerHTML"}' />
+
+  {# CSRF untuk HTMX #}
+  <meta name="csrf-token" content="{{ csrf_token }}" />
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body
+  class="h-full bg-base-200"
+  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+>
+  {# Toast container — updated via OOB swaps #}
+  <div id="toast-container" class="toast toast-top toast-end z-50">
+    {% include "partials/_toast.html" %}
+  </div>
+
+  {% if user.is_authenticated %}
+    <div class="flex h-full">
+      {% include "partials/_sidebar.html" %}
+
+      <div class="flex-1 flex flex-col overflow-hidden">
+        {% include "partials/_navbar.html" %}
+
+        <main
+          id="main-content"
+          class="flex-1 overflow-y-auto p-6"
+          style="view-transition-name: main-content;"
+        >
+          {% block content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+  {% else %}
+    <div class="min-h-screen flex items-center justify-center bg-base-200">
+      {% block auth_content %}{% endblock %}
+    </div>
+  {% endif %}
+
+  {# Django messages → toast OOB #}
+  {% if messages %}
+    {% for message in messages %}
+      <div id="toast-container" hx-swap-oob="beforeend">
+        <div
+          class="alert alert-{{ message.tags }} shadow-lg mb-2 transition-all duration-500"
+          _="on load wait 3.5s then add .opacity-0 .translate-x-full then wait 500ms then remove me"
+        >
+          <span>{{ message }}</span>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {# FinTrack custom JS #}
+  <script src="{% static 'js/fintrack.js' %}"></script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

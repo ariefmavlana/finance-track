@@ -122,6 +122,9 @@ ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
+ACCOUNT_FORMS = {
+    "login": "allauth.account.forms.LoginForm",
+}
 
 # ─── Celery ──────────────────────────────────────────────────
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/1")

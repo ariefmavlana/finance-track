@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Team Management — FinTrack{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+  <div>
+    <h1 class="text-2xl font-bold">Team Management</h1>
+    <p class="text-base-content/60 text-sm">Manage your teams and memberships</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-lg mb-4">Teams You Own</h2>
+        {% if owned_teams %}
+          <div class="space-y-3">
+            {% for team in owned_teams %}
+              <div class="flex items-center justify-between p-3 bg-base-200 rounded-lg">
+                <div>
+                  <h3 class="font-semibold">{{ team.name }}</h3>
+                  <p class="text-sm text-base-content/60">{{ team.memberships.count }} members</p>
+                </div>
+                <div class="badge badge-primary">Owner</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-base-content/60">You don't own any teams yet.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-lg mb-4">Your Memberships</h2>
+        {% if memberships %}
+          <div class="space-y-3">
+            {% for membership in memberships %}
+              <div class="flex items-center justify-between p-3 bg-base-200 rounded-lg">
+                <div>
+                  <h3 class="font-semibold">{{ membership.team.name }}</h3>
+                  <p class="text-sm text-base-content/60">Joined {{ membership.joined_at|date:"M d, Y" }}</p>
+                </div>
+                <div class="badge badge-outline">{{ membership.role }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-base-content/60">You're not a member of any teams yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

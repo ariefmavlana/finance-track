@@ -1,0 +1,86 @@
+{% load static %}
+<aside class="w-64 bg-base-100 shadow-lg flex flex-col h-full">
+  {# Logo #}
+  <div class="p-4 border-b border-base-300">
+    <a href="{% url 'finance:dashboard' %}" class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+        <span class="text-white font-bold text-sm">FT</span>
+      </div>
+      <span class="font-bold text-xl text-base-content">FinTrack</span>
+    </a>
+  </div>
+
+  {# Navigation #}
+  <nav class="flex-1 p-4 space-y-1">
+    <a href="{% url 'finance:dashboard' %}"
+       class="flex items-center gap-3 px-3 py-2 rounded-lg
+              hover:bg-base-200 transition-colors
+              {% if request.resolver_match.url_name == 'dashboard' %}bg-primary/10 text-primary font-medium{% else %}text-base-content{% endif %}">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 7h18M3 12h18M3 17h18"/>
+      </svg>
+      Dashboard
+    </a>
+
+    <a href="{% url 'finance:transaction-list' %}"
+       class="flex items-center gap-3 px-3 py-2 rounded-lg
+              hover:bg-base-200 transition-colors
+              {% if 'transaction' in request.resolver_match.url_name %}bg-primary/10 text-primary font-medium{% else %}text-base-content{% endif %}">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      Transactions
+    </a>
+
+    <a href="{% url 'finance:budget-list' %}"
+       class="flex items-center gap-3 px-3 py-2 rounded-lg
+              hover:bg-base-200 transition-colors
+              {% if 'budget' in request.resolver_match.url_name %}bg-primary/10 text-primary font-medium{% else %}text-base-content{% endif %}">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+      </svg>
+      Budgets
+    </a>
+
+    <a href="{% url 'finance:account-list' %}"
+       class="flex items-center gap-3 px-3 py-2 rounded-lg
+              hover:bg-base-200 transition-colors
+              {% if 'account' in request.resolver_match.url_name %}bg-primary/10 text-primary font-medium{% else %}text-base-content{% endif %}">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+      </svg>
+      Accounts
+    </a>
+
+    <a href="{% url 'finance:reports' %}"
+       class="flex items-center gap-3 px-3 py-2 rounded-lg
+              hover:bg-base-200 transition-colors
+              {% if 'report' in request.resolver_match.url_name %}bg-primary/10 text-primary font-medium{% else %}text-base-content{% endif %}">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      Reports
+    </a>
+  </nav>
+
+  {# User info #}
+  <div class="p-4 border-t border-base-300">
+    <div class="flex items-center gap-3">
+      <div class="avatar placeholder">
+        <div class="bg-neutral text-neutral-content rounded-full w-8">
+          <span class="text-xs">{{ user.email|first|upper }}</span>
+        </div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium truncate">{{ user.get_full_name|default:user.email }}</p>
+        <p class="text-xs text-base-content/50 truncate">{{ user.base_currency }}</p>
+      </div>
+      <a href="{% url 'accounts:profile' %}" class="btn btn-ghost btn-xs">⚙️</a>
+    </div>
+  </div>
+</aside>

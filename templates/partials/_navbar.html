@@ -1,0 +1,61 @@
+<header class="navbar bg-base-100 shadow-sm px-4">
+  {# Breadcrumb #}
+  <div class="flex-1">
+    {% include "partials/_breadcrumb.html" %}
+  </div>
+
+  {# Actions #}
+  <div class="flex items-center gap-2">
+    {# Theme toggle #}
+    <button
+      class="btn btn-ghost btn-circle btn-sm"
+      _="on click
+         if document.documentElement.getAttribute('data-theme') == 'fintrack'
+           set document.documentElement's *data-theme to 'dark'
+         else
+           set document.documentElement's *data-theme to 'fintrack'
+         end
+         localStorage.setItem('theme', document.documentElement.getAttribute('data-theme'))"
+      title="Toggle theme"
+    >
+      🌙
+    </button>
+
+    {# Notifications #}
+    <div class="dropdown dropdown-end">
+      <button tabindex="0" class="btn btn-ghost btn-circle btn-sm">
+        <div class="indicator">
+          🔔
+          {% with unread_count=request.user.notifications.filter.is_read.False.count %}
+            {% if unread_count > 0 %}
+              <span class="badge badge-xs badge-primary indicator-item">{{ unread_count }}</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+      </button>
+      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-80">
+        <li class="menu-title"><span>Notifications</span></li>
+        {% for notif in request.user.notifications.all|slice:":5" %}
+          <li>
+            <a href="{{ notif.url }}" class="{% if not notif.is_read %}font-medium{% endif %}">
+              <div>
+                <p class="text-sm">{{ notif.title }}</p>
+                <p class="text-xs text-base-content/50">{{ notif.created_at|timesince }} ago</p>
+              </div>
+            </a>
+          </li>
+        {% empty %}
+          <li><span class="text-sm text-base-content/50">No notifications</span></li>
+        {% endfor %}
+        <li class="divider"></li>
+        <li><a href="{% url 'notifications:list' %}">View all</a></li>
+      </ul>
+    </div>
+
+    {# Logout #}
+    <form method="post" action="{% url 'account_logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-ghost btn-sm">Logout</button>
+    </form>
+  </div>
+</header>

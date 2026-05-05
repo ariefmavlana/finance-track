@@ -1,5 +1,41 @@
 @import "tailwindcss";
 
+/* ─── Import DaisyUI ────────────────────────────────────────── */
+@plugin "daisyui" {
+  themes: fintrack --default, dark --prefersdark;
+}
+
+/* ─── Custom FinTrack Theme ─────────────────────────────────── */
+@plugin "daisyui/theme" {
+  name: "fintrack";
+  default: true;
+  color-scheme: light;
+
+  --color-primary: #2563EB;
+  --color-primary-content: #FFFFFF;
+  --color-secondary: #7C3AED;
+  --color-secondary-content: #FFFFFF;
+  --color-accent: #059669;
+  --color-accent-content: #FFFFFF;
+  --color-neutral: #374151;
+  --color-neutral-content: #F9FAFB;
+  --color-base-100: #FFFFFF;
+  --color-base-200: #F3F4F6;
+  --color-base-300: #E5E7EB;
+  --color-base-content: #111827;
+  --color-info: #0EA5E9;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+}
+
+/* ─── Dark Theme (built-in) ─────────────────────────────────── */
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  color-scheme: dark;
+}
+
 /* ─── Custom Utilities ──────────────────────────────────────── */
 @layer utilities {
   .currency {
@@ -8,11 +44,11 @@
   }
 
   .income {
-    @apply text-success font-semibold currency;
+    @apply text-success font-semibold;
   }
 
   .expense {
-    @apply text-error font-semibold currency;
+    @apply text-error font-semibold;
   }
 }
 
